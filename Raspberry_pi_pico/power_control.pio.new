@@ -1,0 +1,45 @@
+;
+; PIO program for IP5306 power control
+; Based on official pico-examples PWM implementation
+;
+.program power_control
+.side_set 1 opt
+
+.wrap_target
+    pull noblock side 0  ; Pull from FIFO to OSR if available, else copy X to OSR
+    mov x, osr          ; Copy most-recently-pulled value to X
+    mov y, isr          ; ISR contains PWM period. Y used as counter
+countloop:
+    jmp x!=y noset      ; Set pin high if X == Y
+    jmp skip side 1     ; Jump to skip with pin high
+noset:
+    nop                 ; Keep timing consistent between branches
+skip:
+    jmp y-- countloop   ; Loop until Y hits 0, then pull fresh PWM value
+.wrap
+
+% c-sdk {
+// Initialize PIO PWM
+static inline void power_control_program_init(PIO pio, uint sm, uint offset, uint pin, uint clk_div) {
+    pio_gpio_init(pio, pin);
+    pio_sm_set_consecutive_pindirs(pio, sm, pin, 1, true);
+    pio_sm_config c = power_control_program_get_default_config(offset);
+    sm_config_set_sideset_pins(&c, pin);
+    sm_config_set_clkdiv(&c, clk_div);
+    pio_sm_init(pio, sm, offset, &c);
+}
+
+// Set the PWM period 
+static inline void power_control_set_period(PIO pio, uint sm, uint32_t period) {
+    pio_sm_set_enabled(pio, sm, false);
+    pio_sm_put_blocking(pio, sm, period);
+    pio_sm_exec(pio, sm, pio_encode_pull(false, false));
+    pio_sm_exec(pio, sm, pio_encode_out(pio_isr, 32));
+    pio_sm_set_enabled(pio, sm, true);
+}
+
+// Set the PWM level (duty cycle)
+static inline void power_control_set_level(PIO pio, uint sm, uint32_t level) {
+    pio_sm_put_blocking(pio, sm, level);
+}
+%}

@@ -1,0 +1,58 @@
+# == DO NOT EDIT THE FOLLOWING LINES for the Raspberry Pi Pico VS Code Extension to work ==
+if(WIN32)
+    set(USERHOME $ENV{USERPROFILE})
+else()
+    set(USERHOME $ENV{HOME})
+endif()
+set(sdkVersion 2.1.1)
+set(toolchainVersion 14_2_Rel1)
+set(picotoolVersion 2.1.1)
+set(picoVscode ${USERHOME}/.pico-sdk/cmake/pico-vscode.cmake)
+if (EXISTS ${picoVscode})
+    include(${picoVscode})
+endif()
+# ====================================================================================
+set(PICO_BOARD pico CACHE STRING "Board type")
+
+cmake_minimum_required(VERSION 3.13)
+
+# Pull in SDK (must be before project)
+include(pico_sdk_import.cmake)
+
+# Set up project
+project(gunshot_detector C CXX ASM)
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
+
+# Initialize the Pico SDK
+pico_sdk_init()
+
+# Add main executable first
+add_executable(gunshot_detector
+    Raspberry_pi_pico.c
+    model_handler.c)
+
+# Generate PIO header
+pico_generate_pio_header(gunshot_detector ${CMAKE_CURRENT_LIST_DIR}/inmp441.pio)
+
+# Add the hardware support we need
+target_link_libraries(gunshot_detector
+    pico_stdlib
+    pico_multicore
+    hardware_dma
+    hardware_pio 
+    hardware_gpio
+)
+
+# Explicitly configure stdio UART/USB settings
+pico_enable_stdio_uart(gunshot_detector 1)  # Enable UART for printf
+pico_enable_stdio_usb(gunshot_detector 0)   # Disable USB
+pico_add_extra_outputs(gunshot_detector)     # create map/bin/hex/uf2 file etc
+
+# Add any include directories
+target_include_directories(gunshot_detector PRIVATE
+    ${CMAKE_CURRENT_LIST_DIR}
+)
+
+# Create map/bin/hex/uf2 file etc.
+pico_add_extra_outputs(gunshot_detector)
