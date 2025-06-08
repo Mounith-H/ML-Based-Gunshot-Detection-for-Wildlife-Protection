@@ -511,7 +511,7 @@
       "plot": "",
       "pos_files": "",
       "specctra_dsn": "",
-      "step": "",
+      "step": "pico_node.step",
       "svg": "",
       "vrml": ""
     },
