@@ -1073,4 +1073,3 @@ void update_power_control(float freq, float duty_cycle) {
     // Update the PWM
     power_control_set_level(pio, sm, level);
 }
-
