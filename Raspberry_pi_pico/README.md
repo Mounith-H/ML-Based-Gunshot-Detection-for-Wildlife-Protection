@@ -93,7 +93,7 @@ make
 - IRQ → GP7 (Pin 10)
 
 #### Power Control (IP5306)
-- KEY → GP15 (Pin 20)
+- KEY → GP17 (Pin 22)
 
 ## Key Features
 

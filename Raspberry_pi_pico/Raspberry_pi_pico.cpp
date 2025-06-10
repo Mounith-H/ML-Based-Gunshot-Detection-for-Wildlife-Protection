@@ -9,7 +9,7 @@
 // - L/R  -> GND  (for left channel)
 //
 // LED Connection:
-// - Anode   -> GP22 (Pin 29 on Pico) through a 220Ω resistor
+// - Anode   -> GP13 (Pin 17 on Pico) through a 220Ω resistor
 // - Cathode -> GND  (any GND pin on Pico)
 //
 // FTDI Module Connection:
@@ -35,7 +35,7 @@
 // - IRQ -> GP7 (Pin 10 on Pico) (optional, can be used for interrupts)
 //
 // Power Control MH-CD42 Module:
-// - Key -> GP15 (Pin 20 on Pico) (PWM) [Very importent, used to power to Pico]
+// - Key -> GP17 (Pin 22 on Pico) (PWM) [Very importent, used to power to Pico]
 //
 
 #include <stdio.h>
@@ -83,8 +83,10 @@
 #define INMP441_SCK_PIN 18  // BCLK
 #define INMP441_WS_PIN  19  // LRCLK/WS
 #define INMP441_SD_PIN  20  // DATA
+
+// LED Configuration
 #define LED_INBUILT_IN 25   // Built-in LED
-#define LED_PIN 22         // External LED for gunshot indication
+#define LED_PIN 13         // External LED for gunshot indication
 
 // Audio Configuration
 #define SAMPLE_RATE 16000
@@ -105,7 +107,7 @@
 #define NRF_IRQ_PIN 7  // IRQ pin (optional)
 
 // MD-CD42 Power Control Configuration
-#define POWER_CONTROL_PIN 15   // Key pin for MH-CD42 module
+#define POWER_CONTROL_PIN 17   // Key pin for MH-CD42 module
 #define POWER_CONTROL_PIO pio1 // Using pio1 to avoid conflicts
 #define POWER_CONTROL_SM 1     // State machine 1
 #define POWER_FREQ 2           //  frequency
@@ -896,8 +898,8 @@ void core1_entry() {
 
         // Map confidence to LED brightness
         uint8_t led_brightness = (uint8_t)(confidence * 255);
-        gpio_put(LED_PIN, led_brightness > 50);
         
+        gpio_put(LED_PIN, led_brightness > 90);  // Turn on LED if confidence > 0.5
         // If detection threshold exceeded, trigger gunshot detection
         if (detection) {
             gunshot_detected = true;
@@ -960,6 +962,9 @@ int main() {
     gpio_init(LED_INBUILT_IN);
     gpio_set_dir(LED_INBUILT_IN, GPIO_OUT);
     gpio_put(LED_INBUILT_IN, true);
+
+    gpio_init(LED_PIN);
+    gpio_set_dir(LED_PIN, GPIO_OUT);  // Turn off LED initially
     
     safe_uart_puts("\r\n=== Program Starting (GPS Debug Mode) ===\r\n");
     safe_uart_puts("Initializing...\r\n");

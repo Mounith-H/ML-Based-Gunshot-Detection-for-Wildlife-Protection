@@ -1,25 +1,25 @@
 PCB statistics report
 =====================
-- Date: 08-06-2025 7.55.07 PM
+- Date: Tue 10 Jun 2025 07:43:07 PM IST
 - Project: pico_node
 - Board name: pico_node
 
 Board
 -----
-- Width: 107.3100 mm
-- Height: 53.3000 mm
-- Area: 5719.6230 mm²
+- Width: 100.0000 mm
+- Height: 60.0000 mm
+- Area: 6000.0000 mm²
 
 Pads
 ----
-- Through hole: 94
-- SMD: 6
+- Through hole: 92
+- SMD: 8
 - Connector: 0
 - NPTH: 0
 
 Vias
 ----
-- Through vias: 13
+- Through vias: 16
 - Blind/buried: 0
 - Micro vias: 0
 
@@ -28,10 +28,10 @@ Components
 
 |              | Front Side | Back Side | Total |
 |--------------|------------|-----------|-------|
-|THT:          |         17 |         0 |    17 |
-|SMD:          |          0 |         2 |     2 |
+|THT:          |         16 |         0 |    16 |
+|SMD:          |          0 |         3 |     3 |
 |Unspecified:  |          0 |         0 |     0 |
-|Total:        |         17 |         2 |    19 |
+|Total:        |         16 |         3 |    19 |
 
 Drill holes
 -----------
@@ -39,6 +39,6 @@ Drill holes
 | Count | Shape |    X Size |    Y Size | Plated | Via/Pad | Start Layer | Stop Layer |
 |-------|-------|-----------|-----------|--------|---------|-------------|------------|
 |    79 | Round | 1.0000 mm | 1.0000 mm |    PTH |     Pad |        F.Cu |       B.Cu |
-|    13 | Round | 0.7000 mm | 0.7000 mm |    PTH |     Via |        F.Cu |       B.Cu |
-|    11 | Round | 0.8000 mm | 0.8000 mm |    PTH |     Pad |        F.Cu |       B.Cu |
+|    16 | Round | 0.7000 mm | 0.7000 mm |    PTH |     Via |        F.Cu |       B.Cu |
+|     9 | Round | 0.8000 mm | 0.8000 mm |    PTH |     Pad |        F.Cu |       B.Cu |
 |     4 | Round | 0.9000 mm | 0.9000 mm |    PTH |     Pad |        F.Cu |       B.Cu |
