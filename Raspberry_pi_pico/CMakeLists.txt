@@ -61,6 +61,12 @@ add_library(minmea STATIC
 # Set up minmea includes
 target_include_directories(minmea PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/lib/minmea
+    ${CMAKE_CURRENT_SOURCE_DIR}  # For time_utils.h
+)
+
+# Add compiler definitions for minmea
+target_compile_definitions(minmea PRIVATE
+    timegm=mktime  # Use mktime instead of timegm
 )
 
 # Set up includes and link libraries for the main executable
