@@ -45,8 +45,8 @@ target_link_libraries(nrf24l01 PUBLIC
 # Add main executable first
 add_executable(gunshot_detector
     Raspberry_pi_pico.cpp
-    model_handler.c
-    gps_handler.cpp
+    lib/ml_model/model_handler.c
+    lib/gps_handler/gps_handler.cpp
 )
 
 # Generate PIO header

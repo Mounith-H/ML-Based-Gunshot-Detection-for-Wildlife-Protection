@@ -54,7 +54,7 @@
 #include "hardware/uart.h"
 #include "hardware/spi.h"
 #include "inmp441.pio.h"
-#include "model_handler.h" 
+#include "lib/ml_model/model_handler.h" 
 #include "lib/Pico_NRF24L01/NRF24/NRF24.h"  // Include the NRF24L01 library
 #include "lib/Pico_NRF24L01/NRF24/NRF24_config.h"  // Include the NRF24 config
 #include "power_control.pio.h"  // This will be generated from power_control.pio
@@ -203,6 +203,7 @@ void create_json_message(char* buffer, size_t buffer_size, const gunshot_message
 bool init_power_control(void);
 void update_power_control(float freq, float duty_cycle);
 
+
 // Convert NMEA coordinate format to decimal degrees
 float nmea_to_decimal_degrees(float nmea_coord, char direction) {
     // Extract degrees (before decimal) and minutes (after decimal)
@@ -212,8 +213,7 @@ float nmea_to_decimal_degrees(float nmea_coord, char direction) {
     return (direction == 'S' || direction == 'W') ? -decimal : decimal;
 }
 
-// Parse GPRMC sentence
-// Returns true if parsing successful and fix is valid
+// Parse GPRMC sentence Returns true if parsing successful and fix is valid
 bool parse_gprmc(const char* sentence, float* out_lat, float* out_lon, bool* out_valid) {
     char field_buffer[32];  // Increased buffer for safety
     const char* ptr = sentence;
@@ -377,7 +377,7 @@ bool test_microphone() {
     
     // Initialize the PIO state machine
     snprintf(buf, sizeof(buf), "   Initializing PIO state machine %d on PIO%d\r\n", 
-             INMP441_SM, (INMP441_PIO == pio0) ? 0 : 1);
+                INMP441_SM, (INMP441_PIO == pio0) ? 0 : 1);
     safe_uart_puts(buf);
     snprintf(buf, sizeof(buf), "   Clock frequency: %lu Hz\r\n", clock_get_hz(clk_sys));
     safe_uart_puts(buf);
